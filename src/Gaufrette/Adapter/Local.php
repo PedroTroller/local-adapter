@@ -2,13 +2,15 @@
 
 namespace Gaufrette\Adapter;
 
+use Gaufrette\Adapter\Metadata\MetadataAccessor;
 use Gaufrette\Core\Adapter;
 use Gaufrette\Core\Adapter\KnowsContent;
+use Gaufrette\Core\Adapter\KnowsMetadata;
 use Gaufrette\Core\Adapter\KnowsMimeType;
 use Gaufrette\Core\Adapter\KnowsSize;
 use Phine\Path\Path;
 
-class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize
+class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata
 {
     /**
      * @var string $directory
@@ -26,6 +28,11 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize
     private $mode;
 
     /**
+     * @var MetadataAccessor $metadataAccessor
+     */
+    private $metadataAccessor;
+
+    /**
      * @param string $directory
      * @param boolean $create
      * @param int $mode
@@ -34,9 +41,22 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize
      */
     public function __construct($directory, $create = false, $mode = 0777)
     {
-        $this->directory = Path::canonical($directory);
-        $this->create    = $create;
-        $this->mode      = $mode  ;
+        $this->directory        = Path::canonical($directory);
+        $this->create           = $create;
+        $this->mode             = $mode;
+        $this->metadataAccessor = new MetadataAccessor();
+    }
+
+    /**
+     * @param MetadataAccessor $metadataAccessor if null, metadata feature will be disabled
+     *
+     * @return
+     */
+    public function setMetadataAccessor(MetadataAccessor $metadataAccessor = null)
+    {
+        $this->metadataAccessor = $metadataAccessor;
+
+        return $this;
     }
 
     /**
@@ -53,6 +73,29 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize
     public function writeContent($key, $content)
     {
         file_put_contents($this->getFullPath($key), $content);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function readMetadata($key)
+    {
+        if (null !== $this->metadataAccessor) {
+
+            return $this->metadataAccessor->readMetadata($this->getFullPath($key));
+        }
+
+        return array();
+    }
+
+    public function writeMetadata($key, array $metadata)
+    {
+        if (null !== $this->metadataAccessor) {
+
+            $this->metadataAccessor->writeMetadata($this->getFullPath($key), $metadata);
+        }
 
         return $this;
     }

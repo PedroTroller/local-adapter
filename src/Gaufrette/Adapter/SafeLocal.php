@@ -11,7 +11,7 @@ class SafeLocal extends Local
      */
     protected function getFullPath($key)
     {
-        $key = base64_encode($key);
+        $key = base64_decode($key);
 
         return parent::getFullPath($key);
     }
