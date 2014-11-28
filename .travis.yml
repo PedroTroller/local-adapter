@@ -1,0 +1,28 @@
+language: php
+
+php:
+  - 5.3.3
+  - 5.4
+  - 5.5
+  - 5.6
+
+branches:
+  only:
+    - master
+    - /\d+\.\d+/
+
+before_script:
+    - composer self-update && composer install --dev --prefer-source --no-interaction
+
+script:
+    - ./bin/phpspec run -fpretty --verbose
+    - ./bin/test-suite run Gaufrette/Test/LocalFactory
+    - ./bin/test-suite run Gaufrette/Test/SafeLocalFactory
+
+notifications:
+    webhooks:
+        urls:
+            - "https://webhooks.gitter.im/e/14326d2d9d5a01ee8ebf"
+        on_success: change
+        on_failure: always
+        on_start: false

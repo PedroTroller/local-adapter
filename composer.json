@@ -1,0 +1,37 @@
+{
+    "name":         "gaufrette/local-adapter",
+    "type":         "library",
+    "description":  "PHP5 library that provides a filesystem abstraction layer",
+    "keywords":     ["file", "filesystem", "media", "abstraction", "local"],
+    "minimum-stability": "dev",
+    "homepage":     "http://knplabs.com",
+    "license":      "MIT",
+    "authors": [
+        {
+            "name": "KnpLabs Team",
+            "homepage": "http://knplabs.com"
+        },
+        {
+            "name":     "The contributors",
+            "homepage": "http://github.com/Gaufrette/local-adapter/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "gaufrette/core": "dev-master",
+        "phine/path": "~1.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0",
+        "gaufrette/test-suite": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Gaufrette\\Adapter": "src/" }
+    },
+    "autoload-dev": {
+        "psr-0": { "Gaufrette\\Test": "test/" }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
