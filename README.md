@@ -1,0 +1,1 @@
+#Gaufrette Local Adapter
