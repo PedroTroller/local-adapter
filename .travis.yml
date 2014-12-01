@@ -17,7 +17,6 @@ before_script:
 script:
     - ./bin/phpspec run -fpretty --verbose
     - ./bin/test-suite run Gaufrette/Test/LocalFactory
-    - ./bin/test-suite run Gaufrette/Test/SafeLocalFactory
 
 notifications:
     webhooks:
