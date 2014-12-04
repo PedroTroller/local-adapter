@@ -9,10 +9,20 @@ class MetadataAccessor implements KnowsMetadata
     const METHOD_PHP  = 'php';
     const METHOD_JSON = 'json';
 
-    public function __construct($extension = 'metadata', $serialization = self::METHOD_PHP)
+    public function __construct($extension = '.metadata', $serialization = self::METHOD_PHP)
     {
         $this->extension     = $extension;
         $this->serialization = $serialization;
+    }
+
+    public function isMetadataFile($filename)
+    {
+        if (strlen($filename) <= strlen($this->extension)) {
+
+            return false;
+        }
+
+        return $this->extension === substr($filename, -(strlen($this->extension)));
     }
 
     /**
@@ -68,6 +78,6 @@ class MetadataAccessor implements KnowsMetadata
 
     private function getFilename($path)
     {
-        return sprintf('%s.%s', $path, $this->extension);
+        return sprintf('%s%s', $path, $this->extension);
     }
 }

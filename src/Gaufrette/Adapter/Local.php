@@ -4,13 +4,16 @@ namespace Gaufrette\Adapter;
 
 use Gaufrette\Adapter\Metadata\MetadataAccessor;
 use Gaufrette\Core\Adapter;
+use Gaufrette\Core\Adapter\CanListKeys;
 use Gaufrette\Core\Adapter\KnowsContent;
+use Gaufrette\Core\Adapter\KnowsLastAccess;
+use Gaufrette\Core\Adapter\KnowsLastModification;
 use Gaufrette\Core\Adapter\KnowsMetadata;
 use Gaufrette\Core\Adapter\KnowsMimeType;
 use Gaufrette\Core\Adapter\KnowsSize;
 use Phine\Path\Path;
 
-class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata
+class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata, KnowsLastModification, KnowsLastAccess, CanListKeys
 {
     /**
      * @var string $directory
@@ -121,6 +124,64 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
     /**
      * {@inheritdoc}
      */
+    public function readLastModification($key)
+    {
+        return filemtime($this->getFullPath($key));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function writeLastModification($key, $time)
+    {
+        touch($this->getFullPath($key), $time);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function readLastAccess($key)
+    {
+        return fileatime($this->getFullPath($key));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function writeLastAccess($key, $time)
+    {
+        touch($this->getFullPath($key), $this->readLastModification($key), $time);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function listKeys($prefix = '')
+    {
+        $files     = array();
+        $directory = new \DirectoryIterator($this->getDirectory());
+
+        foreach ($directory as $file) {
+            if (true === $file->isFile()) {
+                $files[] = $file->getFilename();
+            }
+        }
+        sort($files);
+
+        if ('' !== $prefix) {
+            $files = array_filter($files, function ($e) use ($prefix) { return 0 === strpos($e, $prefix); });
+        }
+
+        return $files;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete($key)
     {
         unlink($this->getFullPath($key));
@@ -141,7 +202,7 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
      *
      * @return string
      */
-    protected function getFullPath($key)
+    private function getFullPath($key)
     {
         $fullpath = sprintf('%s/%s', $this->getDirectory(), $key);
 
