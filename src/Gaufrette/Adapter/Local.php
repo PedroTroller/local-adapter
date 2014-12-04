@@ -194,7 +194,7 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
      */
     public function exists($key)
     {
-        return true === file_exists($this->getFullPath($path));
+        return true === file_exists($this->getFullPath($key));
     }
 
     /**
@@ -216,7 +216,7 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
     {
         $this->ensureDirectoryExists($this->directory);
 
-        if (is_link($this->directory)) {
+        if (true === is_link($this->directory)) {
             $this->directory = realpath($this->directory);
         }
 
@@ -246,4 +246,3 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
         }
     }
 }
-

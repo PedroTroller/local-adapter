@@ -10,6 +10,16 @@ class MetadataAccessor implements KnowsMetadata
     const METHOD_JSON = 'json';
 
     /**
+     * @var string $extension
+     */
+    private $extension;
+
+    /**
+     * @var string $serialization
+     */
+    private $serialization;
+
+    /**
      * @param string $extension
      * @param string $serialization
      */
@@ -52,7 +62,7 @@ class MetadataAccessor implements KnowsMetadata
             case self::METHOD_JSON:
                 return json_decode($content);
             default:
-                throw new \invalidargumentexception(sprintf('serialization method %s unknow', $this->method));
+                throw new \InvalidArgumentException(sprintf('Serialization method %s unknow', $this->serialization));
         }
     }
 
@@ -79,7 +89,7 @@ class MetadataAccessor implements KnowsMetadata
                 $content = json_encode($metadata);
                 break;
             default:
-                throw new \invalidargumentexception(sprintf('serialization method %s unknow', $this->method));
+                throw new \InvalidArgumentException(sprintf('Serialization method %s unknow', $this->serialization));
         }
 
         file_put_contents($path, $content);

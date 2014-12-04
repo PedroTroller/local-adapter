@@ -8,8 +8,6 @@ use Phine\Path\Path;
 
 class LocalFactory implements AdapterFactory
 {
-    private $pattern = '%s/../../files';
-
     public function create()
     {
         return new Local($this->getDirectory(), true);

@@ -76,4 +76,13 @@ class MetadataAccessorSpec extends ObjectBehavior
 
         $this->readMetadata($file)->shouldReturn($data);
     }
+
+    function it_doesnt_supports_unknown_serialisation_format()
+    {
+        $this->beConstructedWith('.metadata', 'test');
+        $file = sprintf('%s/file.txt', __DIR__);
+        $data = array('test');
+
+        $this->shouldThrow(new \InvalidArgumentException('Serialization method test unknow'))->duringWriteMetadata($file, $data);
+    }
 }
