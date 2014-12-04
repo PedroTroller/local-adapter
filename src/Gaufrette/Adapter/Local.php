@@ -51,7 +51,7 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
     }
 
     /**
-     * @param MetadataAccessor $metadataAccessor if null, metadata feature will be disabled
+     * @param MetadataAccessor|null $metadataAccessor if null, metadata feature will be disabled
      *
      * @return
      */
@@ -209,6 +209,9 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
         return Path::canonical($fullpath);
     }
 
+    /**
+     * @return string
+     */
     private function getDirectory()
     {
         $this->ensureDirectoryExists($this->directory);
@@ -220,6 +223,9 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
         return $this->directory;
     }
 
+    /**
+     * @param string $directory
+     */
     private function ensureDirectoryExists($directory)
     {
         if (true === is_dir($directory)) {
