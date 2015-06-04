@@ -10,12 +10,12 @@ class MetadataAccessor implements KnowsMetadata
     const METHOD_JSON = 'json';
 
     /**
-     * @var string $extension
+     * @var string
      */
     private $extension;
 
     /**
-     * @var string $serialization
+     * @var string
      */
     private $serialization;
 
@@ -37,7 +37,6 @@ class MetadataAccessor implements KnowsMetadata
     public function isMetadataFile($filename)
     {
         if (strlen($filename) <= strlen($this->extension)) {
-
             return false;
         }
 
@@ -50,7 +49,6 @@ class MetadataAccessor implements KnowsMetadata
     public function readMetadata($path)
     {
         if (false === file_exists($this->getFilename($path))) {
-
             return array();
         }
 

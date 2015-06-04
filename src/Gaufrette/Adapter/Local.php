@@ -16,31 +16,29 @@ use Phine\Path\Path;
 class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata, KnowsLastModification, KnowsLastAccess, CanListKeys
 {
     /**
-     * @var string $directory
+     * @var string
      */
     private $directory;
 
     /**
-     * @var boolean $create
+     * @var boolean
      */
     private $create;
 
     /**
-     * @var int $mode
+     * @var int
      */
     private $mode;
 
     /**
-     * @var MetadataAccessor $metadataAccessor
+     * @var MetadataAccessor
      */
     private $metadataAccessor;
 
     /**
-     * @param string $directory
+     * @param string  $directory
      * @param boolean $create
-     * @param int $mode
-     *
-     * @return void
+     * @param int     $mode
      */
     public function __construct($directory, $create = false, $mode = 0777)
     {
@@ -86,7 +84,6 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
     public function readMetadata($key)
     {
         if (null !== $this->metadataAccessor) {
-
             return $this->metadataAccessor->readMetadata($this->getFullPath($key));
         }
 
@@ -96,7 +93,6 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
     public function writeMetadata($key, array $metadata)
     {
         if (null !== $this->metadataAccessor) {
-
             $this->metadataAccessor->writeMetadata($this->getFullPath($key), $metadata);
         }
 
@@ -229,19 +225,16 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
     private function ensureDirectoryExists($directory)
     {
         if (true === is_dir($directory)) {
-
             return;
         }
 
         if (false === $this->create) {
-
             throw new \RuntimeException(sprintf('The directory "%s" does not exist.', $directory));
         }
 
         $created = mkdir($directory, $this->mode, true);
 
         if (false === $created && false === is_dir($directory)) {
-
             throw new \RuntimeException(sprintf('The directory \'%s\' could not be created.', $directory));
         }
     }
