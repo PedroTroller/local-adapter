@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0",
-        "gaufrette/test-suite": "dev-master",
+        "gaufrette/test-suite": "~1.0",
         "bossa/phpspec2-expect": "dev-master"
     },
     "autoload": {
