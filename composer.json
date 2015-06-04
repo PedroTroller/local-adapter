@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "gaufrette/core": "dev-master",
+        "gaufrette/core": "~1.0",
         "phine/path": "~1.0"
     },
     "require-dev": {
