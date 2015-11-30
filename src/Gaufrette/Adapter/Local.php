@@ -16,29 +16,29 @@ use Phine\Path\Path;
 class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata, KnowsLastModification, KnowsLastAccess, CanListKeys
 {
     /**
-     * @var string
+     * @type string
      */
     private $directory;
 
     /**
-     * @var boolean
+     * @type bool
      */
     private $create;
 
     /**
-     * @var int
+     * @type int
      */
     private $mode;
 
     /**
-     * @var MetadataAccessor
+     * @type MetadataAccessor
      */
     private $metadataAccessor;
 
     /**
-     * @param string  $directory
-     * @param boolean $create
-     * @param int     $mode
+     * @param string $directory
+     * @param bool   $create
+     * @param int    $mode
      */
     public function __construct($directory, $create = false, $mode = 0777)
     {
