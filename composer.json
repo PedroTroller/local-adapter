@@ -17,13 +17,12 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "gaufrette/core": "~1.0",
+        "gaufrette/core": "~1.1.0",
         "phine/path": "~1.0"
     },
     "require-dev": {
         "bossa/phpspec2-expect": "~1.0.0",
-        "fabpot/php-cs-fixer": "~1.10",
-        "gaufrette/test-suite": "~1.0",
+        "gaufrette/test-suite": "~1.1.0",
         "phpspec/phpspec": "~2.0"
     },
     "autoload": {

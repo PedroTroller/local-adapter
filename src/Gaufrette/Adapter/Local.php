@@ -5,6 +5,7 @@ namespace Gaufrette\Adapter;
 use Gaufrette\Adapter\Metadata\MetadataAccessor;
 use Gaufrette\Core\Adapter;
 use Gaufrette\Core\Adapter\CanListKeys;
+use Gaufrette\Core\Adapter\HasConfiguration;
 use Gaufrette\Core\Adapter\KnowsContent;
 use Gaufrette\Core\Adapter\KnowsLastAccess;
 use Gaufrette\Core\Adapter\KnowsLastModification;
@@ -13,7 +14,16 @@ use Gaufrette\Core\Adapter\KnowsMimeType;
 use Gaufrette\Core\Adapter\KnowsSize;
 use Phine\Path\Path;
 
-class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata, KnowsLastModification, KnowsLastAccess, CanListKeys
+class Local implements
+    Adapter,
+    CanListKeys,
+    HasConfiguration,
+    KnowsContent,
+    KnowsLastAccess,
+    KnowsLastModification,
+    KnowsMetadata,
+    KnowsMimeType,
+    KnowsSize
 {
     /**
      * @type string
@@ -46,6 +56,19 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
         $this->create           = $create;
         $this->mode             = $mode;
         $this->metadataAccessor = new MetadataAccessor();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function createFromConfiguration(array $configuration)
+    {
+        $configuration = array_merge(
+            array('create' => false, 'mode' => 0777),
+            $configuration
+        );
+
+        return new self($configuration['directory'], $configuration['create'], $configuration['mode']);
     }
 
     /**
