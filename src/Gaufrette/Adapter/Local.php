@@ -5,6 +5,7 @@ namespace Gaufrette\Adapter;
 use Gaufrette\Adapter\Metadata\MetadataAccessor;
 use Gaufrette\Core\Adapter;
 use Gaufrette\Core\Adapter\CanListKeys;
+use Gaufrette\Core\Adapter\HasConfiguration;
 use Gaufrette\Core\Adapter\KnowsContent;
 use Gaufrette\Core\Adapter\KnowsLastAccess;
 use Gaufrette\Core\Adapter\KnowsLastModification;
@@ -13,32 +14,41 @@ use Gaufrette\Core\Adapter\KnowsMimeType;
 use Gaufrette\Core\Adapter\KnowsSize;
 use Phine\Path\Path;
 
-class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMetadata, KnowsLastModification, KnowsLastAccess, CanListKeys
+class Local implements
+    Adapter,
+    CanListKeys,
+    HasConfiguration,
+    KnowsContent,
+    KnowsLastAccess,
+    KnowsLastModification,
+    KnowsMetadata,
+    KnowsMimeType,
+    KnowsSize
 {
     /**
-     * @var string
+     * @type string
      */
     private $directory;
 
     /**
-     * @var boolean
+     * @type bool
      */
     private $create;
 
     /**
-     * @var int
+     * @type int
      */
     private $mode;
 
     /**
-     * @var MetadataAccessor
+     * @type MetadataAccessor
      */
     private $metadataAccessor;
 
     /**
-     * @param string  $directory
-     * @param boolean $create
-     * @param int     $mode
+     * @param string $directory
+     * @param bool   $create
+     * @param int    $mode
      */
     public function __construct($directory, $create = false, $mode = 0777)
     {
@@ -46,6 +56,19 @@ class Local implements Adapter, KnowsContent, KnowsMimeType, KnowsSize, KnowsMet
         $this->create           = $create;
         $this->mode             = $mode;
         $this->metadataAccessor = new MetadataAccessor();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function createFromConfiguration(array $configuration)
+    {
+        $configuration = array_merge(
+            array('create' => false, 'mode' => 0777),
+            $configuration
+        );
+
+        return new self($configuration['directory'], $configuration['create'], $configuration['mode']);
     }
 
     /**
