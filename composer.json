@@ -1,5 +1,5 @@
 {
-    "name":         "gaufrette/local-adapter",
+    "name":         "pedrotroller/local-adapter",
     "type":         "library",
     "description":  "PHP5 library that provides a filesystem abstraction layer",
     "keywords":     ["file", "filesystem", "media", "abstraction", "local"],
@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "gaufrette/core": "~1.0",
+        "pedrotroller/core": "~1.2",
         "phine/path": "~1.0"
     },
     "require-dev": {
